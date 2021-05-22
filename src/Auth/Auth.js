@@ -11,4 +11,8 @@ export default class Auth {
       scope: "openid profile email"
     });
   }
+
+  login = () => {
+    this.auth0.authorize();
+  }
 }

@@ -4,7 +4,8 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <h1>Home Component</h1>
+        <h1>Home</h1>
+        <button onClick={this.props.auth.login}>Log In</button>
       </div>
     );
   }
