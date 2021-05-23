@@ -5,6 +5,7 @@ import Callback from "./Callback";
 import Home from "./Home";
 import Nav from "./Nav";
 import Profile from "./Profile";
+import Public from "./Public";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -36,6 +37,7 @@ class App extends Component {
               )
             }
           />
+          <Route path="/public" component={Public}/>
         </div>
       </>
     );
