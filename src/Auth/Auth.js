@@ -30,7 +30,7 @@ export default class Auth {
   };
 
   setSession = authResult => {
-    console.log(authResult);
+    console.log('AUTH RESULT', authResult);
     // set the time that the acces token will expire
     const expiresAt = JSON.stringify(authResult.expiresIn * 1000 + new Date().getTime());
     
@@ -41,6 +41,17 @@ export default class Auth {
 
   isAuthenticated() {
     const expiresAt = JSON.parse(localStorage.getItem("expires_at"));
-    return new Date().getTime < expiresAt;
+    return new Date().getTime() < expiresAt;
+  };
+
+  logout = () => {
+    localStorage.removeItem("acces_token");
+    localStorage.removeItem("id_token");
+    localStorage.removeItem("expires_at");
+    // this.history.push("/");
+    this.auth0.logout({
+      clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
+      returnTo: "http://localhost:3000"
+    })
   }
 }
