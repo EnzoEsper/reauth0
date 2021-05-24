@@ -4,6 +4,7 @@ import Auth from "./Auth/Auth";
 import Callback from "./Callback";
 import Home from "./Home";
 import Nav from "./Nav";
+import Private from "./Private";
 import Profile from "./Profile";
 import Public from "./Public";
 class App extends Component {
@@ -37,7 +38,11 @@ class App extends Component {
               )
             }
           />
-          <Route path="/public" component={Public}/>
+          <Route path="/public" component={Public} />
+          <Route
+            path="/private"
+            render={(props) => <Private auth={this.auth} {...props} />}
+          />
         </div>
       </>
     );
