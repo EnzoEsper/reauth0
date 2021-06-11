@@ -83,7 +83,7 @@ export default class Auth {
     });
   };
 
-  useHasScopes(scopes) {
+  userHasScopes(scopes) {
     const grantedScopes = (
       JSON.parse(localStorage.getItem("scopes")) || ""
     ).split(" ");

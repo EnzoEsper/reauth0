@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Redirect, Route } from "react-router-dom";
 import Auth from "./Auth/Auth";
 import Callback from "./Callback";
+import Courses from "./Courses";
 import Home from "./Home";
 import Nav from "./Nav";
 import Private from "./Private";
@@ -42,6 +43,10 @@ class App extends Component {
           <Route
             path="/private"
             render={(props) => this.auth.isAuthenticated() ? <Private auth={this.auth} {...props} /> : this.auth.login()}
+          />
+          <Route
+            path="/courses"
+            render={(props) => this.auth.isAuthenticated() && this.auth.userHasScopes(["read:courses"]) ? <Courses auth={this.auth} {...props} /> : this.auth.login()}
           />
         </div>
       </>
