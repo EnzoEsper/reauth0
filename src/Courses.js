@@ -18,6 +18,19 @@ class Courses extends Component {
       }
     } catch (error) {
       this.setState({ message: error.message })
+    };
+
+    try {
+      const response = await fetch("/admin", {
+        headers: { Authorization: `Bearer ${this.props.auth.getAccessToken()}` }
+      });
+  
+      if (response.ok) {
+        const responseJson = await response.json();
+        console.log(responseJson);
+      }
+    } catch (error) {
+      this.setState({ message: error.message })
     }
   }
 
