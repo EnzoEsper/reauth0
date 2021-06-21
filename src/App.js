@@ -9,26 +9,30 @@ import Private from "./Private";
 import Profile from "./Profile";
 import Public from "./Public";
 import PrivateRoute from "./PrivateRoute";
+import AuthContext from "./AuthContext";
 class App extends Component {
   constructor(props) {
     super(props);
     // history will be injected into this component on props because in index we wrap the App with Router.
-    this.auth = new Auth(this.props.history);
+    this.state = {
+      auth: new Auth(this.props.history)
+    };
   }
 
   render() {
+    const { auth } = this.state;
     return (
-      <>
-        <Nav auth={this.auth} />
+      <AuthContext.Provider value={auth}>
+        <Nav auth={auth} />
         <div className="body">
           <Route
             path="/"
             exact
-            render={(props) => <Home auth={this.auth} {...props} />}
+            render={(props) => <Home auth={auth} {...props} />}
           />
           <Route
             path="/callback"
-            render={(props) => <Callback auth={this.auth} {...props} />}
+            render={(props) => <Callback auth={auth} {...props} />}
           />
           {/* <Route
             path="/profile"
@@ -40,20 +44,20 @@ class App extends Component {
               )
             }
           /> */}
-          <PrivateRoute path="/profile" component={Profile} auth={this.auth} />
+          <PrivateRoute path="/profile" component={Profile} auth={auth} />
           <Route path="/public" component={Public} />
           {/* <Route
             path="/private"
             render={(props) => this.auth.isAuthenticated() ? <Private auth={this.auth} {...props} /> : this.auth.login()}
           /> */}
-          <PrivateRoute path="/private" component={Private} auth={this.auth} />
+          <PrivateRoute path="/private" component={Private} auth={auth} />
           {/* <Route
             path="/courses"
             render={(props) => this.auth.isAuthenticated() && this.auth.userHasScopes(["read:courses"]) ? <Courses auth={this.auth} {...props} /> : this.auth.login()}
           /> */}
-          <PrivateRoute path="/courses" component={Courses} auth={this.auth} scopes={["read:courses"]} />
+          <PrivateRoute path="/courses" component={Courses} auth={auth} scopes={["read:courses"]} />
         </div>
-      </>
+      </AuthContext.Provider>
     );
   }
 }
