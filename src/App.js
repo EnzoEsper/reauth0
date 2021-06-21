@@ -44,18 +44,18 @@ class App extends Component {
               )
             }
           /> */}
-          <PrivateRoute path="/profile" component={Profile} auth={auth} />
+          <PrivateRoute path="/profile" component={Profile} />
           <Route path="/public" component={Public} />
           {/* <Route
             path="/private"
             render={(props) => this.auth.isAuthenticated() ? <Private auth={this.auth} {...props} /> : this.auth.login()}
           /> */}
-          <PrivateRoute path="/private" component={Private} auth={auth} />
+          <PrivateRoute path="/private" component={Private} />
           {/* <Route
             path="/courses"
             render={(props) => this.auth.isAuthenticated() && this.auth.userHasScopes(["read:courses"]) ? <Courses auth={this.auth} {...props} /> : this.auth.login()}
           /> */}
-          <PrivateRoute path="/courses" component={Courses} auth={auth} scopes={["read:courses"]} />
+          <PrivateRoute path="/courses" component={Courses} scopes={["read:courses"]} />
         </div>
       </AuthContext.Provider>
     );
