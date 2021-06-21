@@ -34,7 +34,6 @@ function PrivateRoute({ component: Component, scopes, ...rest }) {
 
 PrivateRoute.propTypes = {
   component: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
   scopes: PropTypes.array,
 };
 

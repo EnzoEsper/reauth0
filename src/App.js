@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Redirect, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
+// import { Redirect, Route } from "react-router-dom";
 import Auth from "./Auth/Auth";
 import Callback from "./Callback";
 import Courses from "./Courses";

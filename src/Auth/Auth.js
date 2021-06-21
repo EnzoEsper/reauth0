@@ -2,6 +2,13 @@ import auth0 from "auth0-js";
 
 const REDIRECT_ON_LOGIN = "redirect_on_login";
 
+// Stored outside the class since private
+// eslint-disable-next-line
+let _idToken = null;
+let _accessToken = null;
+let _scopes = null;
+let _expiresAt = null;
+
 export default class Auth {
   constructor(history) {
     this.history = history;
@@ -41,29 +48,34 @@ export default class Auth {
   setSession = authResult => {
     console.log('AUTH RESULT', authResult);
     // set the time that the access token will expire
-    const expiresAt = JSON.stringify(authResult.expiresIn * 1000 + new Date().getTime());
+    // const expiresAt = JSON.stringify(authResult.expiresIn * 1000 + new Date().getTime());
+    _expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
 
     // If there is a value o the `scope` param from the aurResult => use it to set scopes in the session for the user.
     // Otherwise use the scopes as requested. If no scopes were requested, set it to nothing
-    const scopes = authResult.scope || this.requestedScopes || '';
+    // const scopes = authResult.scope || this.requestedScopes || '';
+    _scopes = authResult.scope || this.requestedScopes || '';
     
-    localStorage.setItem("access_token", authResult.accessToken);
-    localStorage.setItem("id_token", authResult.idToken);
-    localStorage.setItem("expires_at", expiresAt);
-    localStorage.setItem("scopes", JSON.stringify(scopes));
+    // localStorage.setItem("access_token", authResult.accessToken);
+    // localStorage.setItem("id_token", authResult.idToken);
+    _accessToken = authResult.accessToken;
+    _idToken = authResult.idToken;
+    // localStorage.setItem("expires_at", expiresAt);
+    // localStorage.setItem("scopes", JSON.stringify(scopes));
   };
 
   isAuthenticated() {
-    const expiresAt = JSON.parse(localStorage.getItem("expires_at"));
-    return new Date().getTime() < expiresAt;
+    // const expiresAt = JSON.parse(localStorage.getItem("expires_at"));
+    return new Date().getTime() < _expiresAt;
   };
 
   logout = () => {
-    localStorage.removeItem("acces_token");
-    localStorage.removeItem("id_token");
-    localStorage.removeItem("expires_at");
-    localStorage.removeItem("scopes");
-    this.userProfile = null;
+    // localStorage.removeItem("acces_token");
+    // localStorage.removeItem("id_token");
+    // localStorage.removeItem("expires_at");
+    // localStorage.removeItem("scopes");
+
+    // this.userProfile = null; // this line can be deleted since when we redirect it would clear out this instance variable
     // this.history.push("/");
     this.auth0.logout({
       clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
@@ -72,12 +84,12 @@ export default class Auth {
   };
 
   getAccessToken = () => {
-    const accessToken = localStorage.getItem("access_token");
-    if (!accessToken) {
+    // const accessToken = localStorage.getItem("access_token");
+    if (!_accessToken) {
       throw new Error("No access token found.");
     }
     
-    return accessToken;
+    return _accessToken;
   };
 
   getProfile = cb => {
@@ -90,9 +102,10 @@ export default class Auth {
   };
 
   userHasScopes(scopes) {
-    const grantedScopes = (
-      JSON.parse(localStorage.getItem("scopes")) || ""
-    ).split(" ");
+    // const grantedScopes = (
+    //   JSON.parse(localStorage.getItem("scopes")) || ""
+    // ).split(" ");
+    const grantedScopes = (_scopes || "").split(" ");
 
     return scopes.every(scope => grantedScopes.includes(scope));
   }
