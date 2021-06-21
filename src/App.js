@@ -16,12 +16,21 @@ class App extends Component {
     super(props);
     // history will be injected into this component on props because in index we wrap the App with Router.
     this.state = {
-      auth: new Auth(this.props.history)
+      auth: new Auth(this.props.history),
+      tokenRenewalComplete: false
     };
-  }
+  };
+
+  componentDidMount() {
+    this.state.auth.renewToken(() => 
+      this.setState({ tokenRenewalComplete: true })
+    );
+  };
 
   render() {
     const { auth } = this.state;
+    // Show loading message until the token renewal check is completed
+    if (!this.state.tokenRenewalComplete) return "Loading...";
     return (
       <AuthContext.Provider value={auth}>
         <Nav auth={auth} />
